@@ -16,9 +16,12 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * 基本查询
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MongoSelectorApplicationTests {
+public class MongoBaseFindTests {
 
     @Autowired
     private MongoTemplate mongoTemplate;
