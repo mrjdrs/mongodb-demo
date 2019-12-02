@@ -1,6 +1,7 @@
 package com.jdr.maven.mongo.selector;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jdr.maven.mongo.selector.collections.PartnerCollection;
 import com.jdr.maven.mongo.selector.collections.UserCollection;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,5 +98,27 @@ public class MongoSelectorApplicationTests {
         Query query = new Query().with(sort).skip(1).limit(3);
         List<UserCollection> userCollections = mongoTemplate.find(query, UserCollection.class);
         System.err.println(JSONObject.toJSONString(userCollections));
+    }
+
+    /**
+     * DBRef
+     */
+    @Test
+    public void find8() {
+        Query query = new Query(Criteria.where("username").is("小五"));
+        UserCollection userCollection = mongoTemplate.findOne(query, UserCollection.class);
+        Query query2 = new Query(Criteria.where("username").is("路飞"));
+        UserCollection userCollection2 = mongoTemplate.findOne(query2, UserCollection.class);
+        System.err.println(JSONObject.toJSONString(userCollection));
+        System.err.println(JSONObject.toJSONString(userCollection2));
+
+        PartnerCollection partnerCollection = new PartnerCollection();
+        partnerCollection.setName("jdr");
+        partnerCollection.setUsers(Arrays.asList(userCollection, userCollection2));
+        mongoTemplate.insert(partnerCollection);
+
+        Query query3 = new Query(Criteria.where("name").is("jdr"));
+        List<PartnerCollection> partnerCollections = mongoTemplate.find(query3, PartnerCollection.class);
+        partnerCollections.forEach(item -> System.err.println(JSONObject.toJSONString(item)));
     }
 }

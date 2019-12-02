@@ -1,6 +1,8 @@
 package com.jdr.maven.mongo.selector.collections;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -15,6 +17,8 @@ import java.util.List;
 @Document(collection = "users")
 public class UserCollection {
 
+    @Id
+    private ObjectId id;
     private String username;
     private AddressBean address;
     private FavoritesBean favorites;
